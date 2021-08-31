@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | Dashboard{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("css/accueil.css") }}">
+{% endblock %}
+
+{% block h1 %}Dashboard
+<a class="btn btn-outline-danger" href="{{ path('produit_afficher') }}" >gestion produit</a>
+
+{% endblock %}
+{% block body %}Bienvenue sur le Dashboard{% endblock %}

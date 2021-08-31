@@ -1,0 +1,68 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | Panier{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("css/panier.css") }}">
+{% endblock %}
+
+
+
+{% block h1 %}Panier{% endblock %}
+
+{% block body %}
+    {% if panier.id_produit is defined %}
+        {% if panier.id_produit | length > 0 %}
+
+            <table class="table table-hover table-striped table-white text-center">
+                <thead class="bg-dark text-white">
+                <tr>
+                    <th>Titre</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th>Supprimer</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set count = panier.id_produit | length - 1 %}
+                {% for i in 0.. count %}
+                    <tr>
+                        <td>{{ panier.titre[i] }}</td>
+                        <td>{{ panier.prix[i] }} €</td>
+                        {% if panier.quantite[i] == 0 %}
+                            <td class="text-danger">Rutpture de stock</td>
+                        {% else %}
+                            <td>{{ panier.quantite[i] }}</td>
+                        {% endif %}
+
+                        <td>{{ panier.quantite[i] * panier.prix[i] }} €</td>
+                        <td><a href="{{ path('panier_remove', {'id': panier.id_produit[i]}) }}"><img
+                                        src="{{ asset('images/delete.png') }}" alt=""></a></td>
+                    </tr>
+                {% endfor %}
+                <tr class="bg-dark text-white">
+                    <td>Total</td>
+                    <td colspan="2"></td>
+                    <td>{{ total }} €</td>
+                    <td>
+                        <a href="{{ path('panier_vider') }}" class="btn btn-warning">Vider le panier</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            {% if app.user %}
+                <a class="btn btn-success col-md-3" href="{{ path('panier_payer') }}">Payer</a>
+            {% else %}
+                <h4>Pour valider le paiement :</h4>
+                <h5>Veuillez vous connecter <a href="{{ path('connexion') }}">Connecter</a></h5>
+                <h5>Veuillez vous inscrire <a href="{{ path('inscription') }}">Inscrire</a></h5>
+            {% endif %}
+
+        {% else %}
+            <h4 class="text-center text-danger fst-itlaic">Panier vide</h4>
+        {% endif %}
+    {% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,59 @@
+security:
+  password_hashers:
+    # use your user class name here
+    App\Entity\User:
+      # Use native password hasher, which auto-selects the best
+      # possible hashing algorithm (starting from Symfony 5.3 this is "bcrypt")
+      algorithm: bcrypt
+  # https://symfony.com/doc/current/security/experimental_authenticators.html
+  enable_authenticator_manager: true
+  # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+  providers:
+    in_database:
+      entity:
+        class: App\Entity\User
+        property: email
+  #        users_in_memory: { memory: null }
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      lazy: true
+      #            provider: users_in_memory
+      provider: in_database
+
+      # Connexion
+      form_login:
+        login_path: connexion
+        check_path: connexion
+        default_target_path: roles
+      # deconnexion
+      logout:
+        path: deconnexion
+        target: connexion
+
+      # activate different ways to authenticate
+      # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+      # https://symfony.com/doc/current/security/impersonating_user.html
+      # switch_user: true
+
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
+  access_control:
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    #         - { path: ^/inscription, roles: "!IS_AUTHENTICATED_FULLY", requires_channel: https}
+    - { path: ^/inscription, roles: IS_ANONYMOUS, requires_channel: https }
+    - { path: ^/connexion, roles: IS_ANONYMOUS, requires_channel: https }
+    - { path: ^/deconnexion,  roles: IS_AUTHENTICATED_FULLY, requires_channel: https }
+    - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }
+      # - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY && "!IS_AUTHENTICATED_FULLY" , requires_channel: https  }
+      # - { path: ^/profile, roles: ROLE_USER }
+
+      # Tous les rôles du site : IS_AUTHENTICATED_FULLY
+      # Sans rôle (utilisateurs non connectés): IS_ANONYMOUSLY
+
+#    role_hierarchy:
+#      ROLE_ADMIN:       ROLE_USER
+#      ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]

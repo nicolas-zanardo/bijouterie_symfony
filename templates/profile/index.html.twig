@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Profile{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("css/accueil.css") }}">
+{% endblock %}
+{% block body %}
+    {% for notification in app.flashes('success') %}
+        <div class="alert alert-success col-md-6 mx-auto text-center disparition">{{ notification }}</div>
+    {% endfor %}
+
+    <h2>Bonjour, {{ user.nom }}</h2>
+    <hr>
+    <div class="col-md-4 mx-auto">
+        {{ form_start(formUser) }}
+
+        {{ form_row(formUser.email) }}
+        {{ form_row(formUser.prenom) }}
+        {{ form_row(formUser.nom) }}
+        <div class="mt-2">
+            <div>
+                🔑<a href="{{ path('edit_password') }}" class="m-2">Modifier le mot de passe</a>
+            </div>
+            <div>
+                🔑<a href="{{ path('password_modification') }}" class="m-2">Modifier le mot de passe V2</a>
+            </div>
+            <div>
+                🗑<a href="#" class="m-2">Supprimer le profil</a>
+            </div>
+
+        </div>
+
+        <input type="submit" name="" class="btn btn-warning col-md-12 mt-3" id="" value="Modifier">
+
+        {{ form_end(formUser) }}
+    </div>
+{% endblock %}

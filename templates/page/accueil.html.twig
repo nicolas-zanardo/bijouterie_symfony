@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | Accueil{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("css/accueil.css") }}">
+{% endblock %}
+
+
+
+{% block h1 %}Accueil{% endblock %}
+
+{% block body %}
+    Bienvenue sur la bijouterie
+
+    {#
+    La variable d'environement est similaire a la variable SESSION
+    on y trouves les flashes, les message crées par la méthode assFlash()
+    mais également si un utilisateur est connecté, on trouvera un tableau user
+    #}
+
+    {{ dump(app) }}
+
+    {% if app.user %}
+        {{ app.user.email }}
+    {% else %}
+        Bonjour Anonyme
+    {% endif %}
+
+{% endblock %}
+
